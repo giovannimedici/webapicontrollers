@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
+using TodoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<MongoDbService>();
 
 // Add services to the container.
 
@@ -28,3 +31,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
