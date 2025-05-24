@@ -6,7 +6,7 @@ A simple Todo List API built using **ASP.NET Core Web API** with **Entity Framew
 
 - [.NET 8 / ASP.NET Core Web API](https://learn.microsoft.com/aspnet/core/web-api/)
 - [Entity Framework Core](https://learn.microsoft.com/ef/core/)
-- [In-Memory Database or SQL Server (configurable)](https://learn.microsoft.com/ef/core/providers/)
+- [MongoDB - Atlas](https://www.mongodb.com/cloud/atlas/register)
 - [Swagger (optional via Swashbuckle or NSwag)](https://swagger.io/)
 
 ## 🚀 Features
