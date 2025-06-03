@@ -25,8 +25,9 @@ public class TodoItemsControllerTests
     public async Task GetTodoItem_WithUnexistingItem_ReturnsNotFound()
     {
         // arrange
-        _repositoryStub.Setup(repo => repo.GetItemById("27")).ReturnsAsync((TodoItem)null);
+        _repositoryStub.Setup(repo => repo.GetItemById("27")).ReturnsAsync((TodoItem?)null);
         var controller = new TodoItemsController(_repositoryStub.Object);
+        suco
 
         // act
         var result = await controller.GetTodoItem("27");
