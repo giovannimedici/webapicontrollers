@@ -4,6 +4,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language;
 using Moq;
+using NuGet.Protocol;
 using TodoApi.Controllers;
 using TodoApi.Models;
 using TodoApi.Services;
@@ -27,7 +28,6 @@ public class TodoItemsControllerTests
         // arrange
         _repositoryStub.Setup(repo => repo.GetItemById("27")).ReturnsAsync((TodoItem?)null);
         var controller = new TodoItemsController(_repositoryStub.Object);
-        batata;
 
         // act
         var result = await controller.GetTodoItem("27");
