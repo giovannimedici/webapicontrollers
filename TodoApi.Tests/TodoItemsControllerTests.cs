@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language;
 using Moq;
 using NuGet.Protocol;
-using NuGet.Protocol;
 using TodoApi.Controllers;
 using TodoApi.Models;
 using TodoApi.Services;
