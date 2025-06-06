@@ -14,11 +14,11 @@ namespace TodoApi.Tests;
 
 public class TodoItemsControllerTests
 {
-    private Mock<IMongoDbService> _repositoryStub = new Mock<IMongoDbService>();
+    private Mock<ITodoItemsService> _repositoryStub = new Mock<ITodoItemsService>();
 
     public TodoItemsControllerTests()
     {
-        _repositoryStub = new Mock<IMongoDbService>();
+        _repositoryStub = new Mock<ITodoItemsService>();
     }
 
     [Fact]
