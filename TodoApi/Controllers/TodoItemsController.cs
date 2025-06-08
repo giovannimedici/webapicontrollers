@@ -8,17 +8,17 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly IMongoDbService _mongodbService;
-        public TodoItemsController(IMongoDbService mongodbService)
+        private readonly ITodoItemsService _todoItemsService;
+        public TodoItemsController(ITodoItemsService todoItemsService)
         {
-            _mongodbService = mongodbService;
+            _todoItemsService = todoItemsService;
         }
 
         // GET: api/TodoItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems(string? nameToMatch = null)
         {
-            var items = await _mongodbService.GetAllItensAsync();
+            var items = await _todoItemsService.GetAllItensAsync();
 
             if (!string.IsNullOrEmpty(nameToMatch))
             {
@@ -34,7 +34,7 @@ namespace TodoApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(string id)
         {
-            var todoItem = await _mongodbService.GetItemById(id);
+            var todoItem = await _todoItemsService.GetItemById(id);
 
             if (todoItem == null)
             {
@@ -49,7 +49,7 @@ namespace TodoApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(string id, TodoItem updatedTodoItem)
         {
-            var item = await _mongodbService.GetItemById(id);
+            var item = await _todoItemsService.GetItemById(id);
 
             if (item is null)
             {
@@ -58,7 +58,7 @@ namespace TodoApi.Controllers
 
             updatedTodoItem.Id = item.Id;
 
-            await _mongodbService.UpdateTodoItemAsync(id, updatedTodoItem);
+            await _todoItemsService.UpdateTodoItemAsync(id, updatedTodoItem);
 
             return NoContent();
         }
@@ -68,7 +68,7 @@ namespace TodoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
-            await _mongodbService.CreateAsync(todoItem);
+            await _todoItemsService.CreateAsync(todoItem);
 
             return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
         }
@@ -77,14 +77,14 @@ namespace TodoApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(string id)
         {
-            var todoItem = await _mongodbService.GetItemById(id);
+            var todoItem = await _todoItemsService.GetItemById(id);
 
             if (todoItem is null)
             {
                 return NotFound();
             }
 
-            await _mongodbService.DeleteAsync(id);
+            await _todoItemsService.DeleteAsync(id);
 
             return NoContent();
         }

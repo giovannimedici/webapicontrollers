@@ -6,8 +6,8 @@ System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolTyp
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
-builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
-
+builder.Services.AddSingleton<MongoDbService>();
+builder.Services.AddSingleton<ITodoItemsService, TodoItemsService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

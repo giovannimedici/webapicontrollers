@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TodoApi.Services
 {
-    public interface IMongoDbService
+    public interface ITodoItemsService
     {
         Task<List<TodoItem>> GetAllItensAsync();
         Task<TodoItem?> GetItemById(string id);
