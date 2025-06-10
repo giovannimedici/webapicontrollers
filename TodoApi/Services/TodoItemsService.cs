@@ -10,9 +10,11 @@ namespace TodoApi.Services
     {
         private readonly IMongoCollection<TodoItem> _todoItems;
 
-        public TodoItemsService(MongoDbService mongoDbService, IOptions<MongoDbSettings> mongoDBSettings)
+        public TodoItemsService(MongoDbService mongoDbService, IConfiguration configuration)
         {
-            _todoItems = mongoDbService.GetCollection<TodoItem>(mongoDBSettings.Value.CollectionName);
+            var todoItemsCollectionName = configuration["Collections:TodoList"] 
+                ?? throw new ArgumentNullException("Collections:TodoList", "O nome da collection de itens não foi configurado.");
+            _todoItems = mongoDbService.GetCollection<TodoItem>(todoItemsCollectionName);
         }
 
         public async Task<List<TodoItem>> GetAllItensAsync() => await _todoItems.Find(_ => true).ToListAsync();
