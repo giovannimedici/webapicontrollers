@@ -1,4 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using TodoApi.Models;
 using TodoApi.Services;
 
@@ -9,10 +14,13 @@ namespace TodoApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly JwtSettings _jwtSettings;
+        public UserController(IUserService userService, IOptions<JwtSettings> jwtSettings)
         {
             _userService = userService;
+            _jwtSettings = jwtSettings.Value;
         }
+
 
         // POST: api/User
         [HttpPost]
@@ -44,7 +52,27 @@ namespace TodoApi.Controllers
             try
             {
                 var user = await _userService.LoginAsync(loginRequest.Email, loginRequest.Password);
-                return Ok(user);
+
+                var claims = new[]{
+                    new Claim(ClaimTypes.Name, loginRequest.Email),
+                    new Claim(ClaimTypes.Role, "Admin")
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                    issuer: _jwtSettings.Issuer,
+                    audience: _jwtSettings.Audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
+                    signingCredentials: creds
+                );
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token)
+                });
             }
             catch (Exception ex)
             {

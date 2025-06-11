@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 using TodoApi.Services;
@@ -15,6 +16,7 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/TodoItems
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems(string? nameToMatch = null)
         {
@@ -28,9 +30,10 @@ namespace TodoApi.Controllers
             return items;
         }
 
-        
+
 
         // GET: api/TodoItems/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(string id)
         {
@@ -46,6 +49,7 @@ namespace TodoApi.Controllers
 
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(string id, TodoItem updatedTodoItem)
         {
@@ -65,6 +69,7 @@ namespace TodoApi.Controllers
 
         // POST: api/TodoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
@@ -74,6 +79,7 @@ namespace TodoApi.Controllers
         }
 
         // DELETE: api/TodoItems/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(string id)
         {
