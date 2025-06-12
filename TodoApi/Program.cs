@@ -8,6 +8,10 @@ using TodoApi.Services;
 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration["MongoDB:ConnectionURI"];
+var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"];
+
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<ITodoItemsService, TodoItemsService>();

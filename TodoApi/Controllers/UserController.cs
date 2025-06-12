@@ -15,12 +15,13 @@ namespace TodoApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly JwtSettings _jwtSettings;
-        public UserController(IUserService userService, IOptions<JwtSettings> jwtSettings)
+        private readonly IConfiguration _configuration;
+        public UserController(IUserService userService, IOptions<JwtSettings> jwtSettings, IConfiguration configuration)
         {
             _userService = userService;
             _jwtSettings = jwtSettings.Value;
+            _configuration = configuration;
         }
-
 
         // POST: api/User
         [HttpPost]
@@ -58,7 +59,8 @@ namespace TodoApi.Controllers
                     new Claim(ClaimTypes.Role, "Admin")
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+                var jwtSecretKey = _configuration["JwtSettings:SecretKey"];
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
