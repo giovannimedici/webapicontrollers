@@ -15,7 +15,7 @@ var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"];
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<ITodoItemsService, TodoItemsService>();
-builder.Services.AddSingleton<IUserService, UserService>(); 
+builder.Services.AddSingleton<IUserService, UserService>();
 // Add services to the container.
 
 
@@ -48,6 +48,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Configure(builder.Configuration.GetSection("Kestrel"));
+});
+
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 var app = builder.Build();
@@ -61,7 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
+app.UseAuthentication();
 
 app.UseAuthorization();
 
