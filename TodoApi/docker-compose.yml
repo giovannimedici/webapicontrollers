@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  todoapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todoapi-container
+    ports:
+      - "5288:5288"
+    environment:
+      - MongoDB__ConnectionURI=${MongoDB__ConnectionURI}
+      - JwtSettings__SecretKey=${JwtSettings__SecretKey}
+    restart: unless-stopped
